@@ -36,8 +36,29 @@
     messagingSenderId: "619177160717",
     appId: "1:619177160717:web:443d2df2c007f431"
   };
+
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
+
+  var database = firebase.database();
+  $('#guardar').click(function(){
+  	//Almacenar los valores 
+  		var nombre = $('#nombre').val();
+  		var apellido = $('#apellido').val();
+  	//Generar el id 
+  		var id = firebase.database().ref().child('personas').push().key;
+  	// Guardar
+  	firebase.database().ref('personas/'+id).set({
+
+  		nombre:nombre,
+  		apellido:apellido,
+  		id:id
+  	});
+  	//Limpiar el registro
+  	$('#nombre').val("");
+  	$('#apellido').val("");
+  });
+  
 </script>
 </body>
 </html>
