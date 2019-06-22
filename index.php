@@ -5,17 +5,30 @@
 </head>
 <body>
 
+<!--INICIO FORMULARIO -->
 <input type="text" id="nombre" placeholder="nombre"> <br>
 <input type="text" id="apellido" placeholder="apellido"> <br>
 <button id="guardar">Guardar</button>
 
+<!--FIN DEL FORMULARIO -->
 
-<!-- JQUERY -->
+<!--INICIO CREAR UNA TABLA PARA MOSTRAR LOS DATOS -->
+
+	<table id="datos" border="1">
+		<th>Nombre</th>
+		<th>Apellido</th>
+		<th></th>
+		<th></th>
+	</table>
+
+<!--FIN CREAR UNA TABLA PARA MOSTRAR LOS DATOS -->
+
+<!-- JQUERY INICIO-->
 <script
   src="https://code.jquery.com/jquery-3.4.1.min.js"
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
   crossorigin="anonymous"></script>
-
+<!-- JQUERY FIN-->
 
 
 
@@ -40,6 +53,7 @@
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 
+//INICIO GUARDAR LOS DATOS EN FIREBASE
   var database = firebase.database();
   $('#guardar').click(function(){
   	//Almacenar los valores 
@@ -58,7 +72,20 @@
   	$('#nombre').val("");
   	$('#apellido').val("");
   });
-  
+//FIN GUARDAR LOS DATOS EN FIREBASE
+
+//INICIO MOSTRAR DATOS
+	database.ref('personas').on('child_added',function(data){
+		const row = '<tr id="'+data.val().id+'">'+
+		'<td>'+data.val().nombre+'</td>'+
+		'<td>'+data.val().apellido+'</td>'+
+		'<td><button value="'+data.val().id+'" onclick="editar(this.value)">Editar</button></td>'+
+		'<td><button value="'+data.val().id+'" onclick="eliminar(this.value)">Eliminar</button></td>'+
+		'</tr>';
+		$('#datos').append(row);
+	});
+
+//FIN MOSTRAR DATOS
 </script>
 </body>
 </html>
