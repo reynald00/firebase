@@ -8,6 +8,7 @@
 <!--INICIO FORMULARIO -->
 <input type="text" id="nombre" placeholder="nombre"> <br>
 <input type="text" id="apellido" placeholder="apellido"> <br>
+
 <button id="guardar">Guardar</button>
 
 <!--FIN DEL FORMULARIO -->
@@ -86,6 +87,21 @@
 	});
 
 //FIN MOSTRAR DATOS
+
+//INICIO EDITAR DATOS
+	function editar(id){
+		firebase.database().ref('personas/'+ id).once('value').then(function(snapshot){
+
+			var nombre = snapshot.val().nombre;
+			var apellido = snapshot.val().apellido;
+			var id = snapshot.val().id;
+			$('#nombre').val(nombre);
+			$('#apellido').val(apellido);
+			$('#id').val(id);
+		});
+	}
+
+//FIN EDITAR DATOS
 </script>
 </body>
 </html>
