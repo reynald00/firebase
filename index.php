@@ -8,9 +8,9 @@
 <!--INICIO FORMULARIO -->
 <input type="text" id="nombre" placeholder="nombre"> <br>
 <input type="text" id="apellido" placeholder="apellido"> <br>
-
+<input type="text" id="id"><br>
 <button id="guardar">Guardar</button>
-
+<button id="actualizar">Actualizar</button>
 <!--FIN DEL FORMULARIO -->
 
 <!--INICIO CREAR UNA TABLA PARA MOSTRAR LOS DATOS -->
@@ -88,6 +88,21 @@
 
 //FIN MOSTRAR DATOS
 
+//INICIO FUNCIÓN CHILD_CHANGED
+database.ref('personas').on('child_changed',function(data){
+
+		$('#'+data.val().id).remove();
+
+		const row = '<tr id="'+data.val().id+'">'+
+		'<td>'+data.val().nombre+'</td>'+
+		'<td>'+data.val().apellido+'</td>'+
+		'<td><button value="'+data.val().id+'" onclick="editar(this.value)">Editar</button></td>'+
+		'<td><button value="'+data.val().id+'" onclick="eliminar(this.value)">Eliminar</button></td>'+
+		'</tr>';
+		$('#datos').append(row);
+	});
+//FIN FUNCIÓN CHILD_CHANGED
+
 //INICIO EDITAR DATOS
 	function editar(id){
 		firebase.database().ref('personas/'+ id).once('value').then(function(snapshot){
@@ -102,6 +117,29 @@
 	}
 
 //FIN EDITAR DATOS
+
+//INICIO ACTUALIZAR BOTON
+$('#actualizar').click(function(event){
+	//Guardar en variales los valores 
+	var id = $('#id').val();
+	var nombre = $('#nombre').val();
+	var apellido = $('#apellido').val();
+	
+	var post = {
+		nombre: nombre,
+		apellido: apellido
+	};
+
+	database.ref('personas/'+id).update(post);
+
+	//limpiar valores 
+	$('#id').val('');
+	$('#nombre').val('');
+	$('#apellido').val('');
+
+
+});
+//FIN ACTUALIZAR BOTON
 </script>
 </body>
 </html>
