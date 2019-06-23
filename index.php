@@ -140,6 +140,21 @@ $('#actualizar').click(function(event){
 
 });
 //FIN ACTUALIZAR BOTON
+
+//INICIO FUNCIÓN ELIMINAR
+function eliminar(id){
+	firebase.database().ref('personas/'+id).remove();
+}
+//FIN FUNCIÓN ELIMINAR
+
+
+//INICIO EVENTO ELIMINAR
+database.ref('personas').on('child_removed', function(data){
+
+	$('#'+data.val().id).remove();
+});
+//FIN EVENTO ELIMINAR 
+
 </script>
 </body>
 </html>
